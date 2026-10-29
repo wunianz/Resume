@@ -19,7 +19,7 @@ nav_standards: 标准制定
 # English-language metadata (edit here)
 site_title_en: Homepage
 name_primary_en: Lu Zhang
-name_secondary_en: Associate Professor
+name_secondary_en: Associate Researcher
 affiliation_en: Institute of Artificial Intelligence, Hefei Comprehensive National Science Center
 research_focus_en: Intelligent Perception
 github_text_en: GitHub
