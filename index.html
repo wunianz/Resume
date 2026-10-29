@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -267,18 +267,18 @@
   <header class="nav">
     <div class="nav-inner">
       <a class="brand" href="#about-me" id="site-title"></a>
-      <nav class="nav-links" aria-label="主导航">
+      <nav class="nav-links" aria-label="Main navigation">
         <a href="#about-me"></a><a href="#experience"></a><a href="#publications"></a>
         <a href="#projects"></a><a href="#patents"></a><a href="#standards"></a>
       </nav>
-      <div class="language-switch" role="group" aria-label="语言切换">
-        <button type="button" data-language="zh" aria-pressed="true" lang="zh-CN">中文</button>
-        <button type="button" data-language="en" aria-pressed="false" lang="en">English</button>
+      <div class="language-switch" role="group" aria-label="Language">
+        <button type="button" data-language="zh" aria-pressed="false" lang="zh-CN">Chinese</button>
+        <button type="button" data-language="en" aria-pressed="true" lang="en">English</button>
       </div>
     </div>
   </header>
   <div class="wrap">
-    <aside aria-label="个人资料">
+    <aside aria-label="Profile">
       <div class="avatar" id="profile-avatar" role="img"></div>
       <h2><span id="profile-name-cn"></span> <small id="profile-name-en"></small></h2>
       <p id="profile-affiliation"></p>
@@ -298,10 +298,9 @@
     const source = new URL('./_pages/about.md', document.baseURI);
     let lastMarkdown = null;
     const urlLanguage = new URLSearchParams(location.search).get('lang');
-    let currentLanguage = urlLanguage === 'en' || urlLanguage === 'zh' ? urlLanguage : (() => {
-      try { return localStorage.getItem('resume-language') === 'en' ? 'en' : 'zh'; }
-      catch { return 'zh'; }
-    })();
+    // English is the canonical default; ?lang=zh explicitly selects Chinese.
+    // Do not use an old saved preference to silently override this default.
+    let currentLanguage = urlLanguage === 'zh' ? 'zh' : 'en';
 
     // Header, sidebar, navigation, footer and main content all live in one Markdown file.
     function parseSource(markdown) {
@@ -406,9 +405,8 @@
     function setLanguage(language) {
       if (language !== 'zh' && language !== 'en') return;
       currentLanguage = language;
-      try { localStorage.setItem('resume-language', language); } catch { /* storage may be disabled */ }
       const url = new URL(location.href);
-      if (language === 'en') url.searchParams.set('lang', 'en');
+      if (language === 'zh') url.searchParams.set('lang', 'zh');
       else url.searchParams.delete('lang');
       history.replaceState(history.state, '', url.pathname + url.search + url.hash);
       if (lastMarkdown !== null) {
@@ -496,4 +494,3 @@
   </script>
 </body>
 </html>
-

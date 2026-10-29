@@ -5,7 +5,7 @@ site_description: 智能感知
 name_cn: 张露
 name_en: Lu Zhang
 name_secondary: 副研究员
-affiliation: 合肥综合性国家科学中心人工智能研究院（安徽省人工智能实验室）
+affiliation: 合肥综合性国家科学中心人工智能研究院
 research_focus: 智能感知
 github_text: GitHub
 github_url: https://github.com/wunianz
@@ -141,10 +141,10 @@ My research focuses on **intelligent perception**, particularly multi-sensor joi
 3. **2011-09 - 2015-07**. Jianghuai College, Anhui University, Bachelor's Degree in Computer Software.
 
 ## Postdoctoral Research
-1. **2022-07 - 2025-05**. Institute of Artificial Intelligence, Hefei Comprehensive National Science Center (Anhui Artificial Intelligence Laboratory), Postdoctoral Researcher (completed). Host Supervisor: Yanyong Zhang.
+1. **2022-07 - 2025-05**. Institute of Artificial Intelligence, Hefei Comprehensive National Science Center, Postdoctoral Researcher (completed). Host Supervisor: Yanyong Zhang.
 
 ## Research and Academic Appointments
-1. **2025-05 - Present**. Institute of Artificial Intelligence, Hefei Comprehensive National Science Center (Anhui Artificial Intelligence Laboratory), Department of Technology Research, Associate Researcher.
+1. **2025-05 - Present**. Institute of Artificial Intelligence, Hefei Comprehensive National Science Center, Department of Technology Research, Associate Researcher.
 
 
 <div class="anchor" id="publications"></div>
