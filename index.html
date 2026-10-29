@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title></title>
+  <style>
+
+    :root {
+      color-scheme:light;
+      --ink:#202124;
+      --ink-strong:#101010;
+      --muted:#616161;
+      --accent:#333333;
+      --accent-dark:#111111;
+      --line:#e3e3e3;
+      --canvas:#f7f7f7;
+      --surface:#ffffff;
+      --shadow:0 18px 48px rgba(0,0,0,.055),0 2px 8px rgba(0,0,0,.025);
+    }
+    * { box-sizing:border-box }
+    html { scroll-behavior:smooth;scroll-padding-top:104px }
+    body {
+      margin:0;
+      min-width:320px;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%,rgba(224,224,224,.20),transparent 28rem),
+        radial-gradient(circle at 92% 34%,rgba(225,225,225,.20),transparent 35rem),
+        var(--canvas);
+      font:15px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    a { color:var(--accent);text-decoration:none;text-underline-offset:3px;transition:color .18s ease }
+    a:hover { color:var(--accent-dark);text-decoration:underline }
+    a:focus-visible { outline:3px solid rgba(36,101,142,.32);outline-offset:4px;border-radius:4px }
+    .nav {
+      position:sticky;top:0;z-index:20;
+      background:rgba(255,255,255,.96);
+      border-bottom:1px solid rgba(223,223,223,.92);
+      box-shadow:0 4px 18px rgba(0,0,0,.035);
+      -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    }
+    .nav-inner {
+      max-width:1220px;min-height:72px;margin:0 auto;
+      display:flex;align-items:center;gap:36px;padding:0 30px;
+    }
+    .brand {
+      display:inline-flex;align-items:center;gap:12px;
+      margin-right:auto;white-space:nowrap;
+      color:var(--ink-strong);font-size:17px;font-weight:750;letter-spacing:.025em;
+    }
+    .brand::before {
+      content:"";display:block;width:12px;height:12px;
+      background:linear-gradient(145deg,#505050,#1f1f1f);
+      border-radius:3px;transform:rotate(45deg);
+      box-shadow:0 0 0 4px rgba(0,0,0,.06);
+    }
+    .brand:hover { color:var(--accent-dark);text-decoration:none }
+    .nav-links { display:flex;align-items:center;gap:4px;flex-wrap:nowrap }
+    .nav-links a {
+      position:relative;display:inline-flex;align-items:center;
+      min-height:42px;padding:11px 13px;border-radius:9px;
+      white-space:nowrap;font-size:13px;font-weight:550;color:#565656;
+    }
+    .nav-links a:hover,.nav-links a[aria-current="location"] {
+      background:#eeeeee;color:var(--accent-dark);text-decoration:none;
+    }
+    .nav-links a[aria-current="location"]::after {
+      content:"";position:absolute;bottom:4px;left:14px;right:14px;
+      height:2px;background:#3b3b3b;border-radius:4px;
+    }
+    .language-switch {
+      display:inline-flex;align-items:center;gap:2px;flex:0 0 auto;
+      padding:3px;background:#f3f3f3;border:1px solid #dedede;border-radius:10px;
+    }
+    .language-switch button {
+      border:0;border-radius:7px;padding:9px 11px;background:transparent;
+      color:#4d4d4d;cursor:pointer;font-size:12px;font-weight:650;line-height:1.25;font-family:inherit;
+    }
+    .language-switch button[aria-pressed="true"] {
+      background:#242424;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);
+    }
+    .language-switch button:focus-visible {
+      outline:2px solid #333;outline-offset:2px;
+    }
+    .wrap {
+      width:min(1220px,100%);margin:0 auto;
+      padding:46px 30px 80px;
+      display:grid;grid-template-columns:270px minmax(0,1fr);
+      align-items:start;gap:30px;
+    }
+    aside {
+      position:sticky;top:106px;align-self:start;
+      padding:30px 25px 27px;
+      background:var(--surface);
+      border:1px solid var(--line);border-radius:16px;
+      box-shadow:var(--shadow);
+    }
+    .avatar {
+      width:146px;height:146px;margin:0 auto 24px;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;
+      background:linear-gradient(145deg,#555555 4%,#1b1b1b 97%);
+      box-shadow:0 14px 26px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.23);
+      border:5px solid #f0f0f0;border-radius:50%;
+      font-size:48px;font-weight:300;letter-spacing:-3px;
+    }
+    aside h2 {
+      color:var(--ink-strong);font-size:23px;line-height:1.25;font-weight:760;
+      margin:0 0 17px;text-align:center;
+    }
+    aside h2 small {
+      display:block;margin-top:6px;
+      color:var(--muted);font-size:13px;line-height:1.25;font-weight:500;letter-spacing:.035em;
+    }
+    aside p {
+      margin:8px 0;color:#606060;
+      font-size:13px;line-height:1.25;text-align:center;overflow-wrap:anywhere;
+    }
+    #profile-affiliation { color:#323232;font-weight:550 }
+    #profile-research-focus {
+      width:fit-content;max-width:100%;margin:14px auto 0;
+      padding:6px 13px;background:#f0f0f0;color:var(--accent-dark);
+      border:1px solid #e1e1e1;border-radius:100px;font-size:12px;font-weight:650;
+    }
+    aside .meta {
+      display:flex;justify-content:center;flex-wrap:wrap;gap:9px;
+      border-top:1px solid var(--line);margin-top:22px;padding-top:19px;
+    }
+    aside .meta a {
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:35px;padding:9px 12px;
+      border:1px solid #dedede;border-radius:8px;
+      background:#fdfdfd;font-size:12px;font-weight:650;
+      color:var(--accent-dark);transition:background .18s ease,border-color .18s ease,transform .18s ease;
+    }
+    aside .meta a:hover {
+      text-decoration:none;background:#eeeeee;border-color:#bdbdbd;transform:translateY(-1px);
+    }
+    aside .meta a[hidden] { display:none }
+    main {
+      min-width:0;min-height:500px;padding:38px 45px 54px;
+      border:1px solid var(--line);border-radius:16px;
+      background:var(--surface);box-shadow:var(--shadow);
+      overflow-wrap:break-word;
+    }
+    main .anchor { display:block;height:0;scroll-margin-top:104px }
+    main #about-me + p {
+      position:relative;margin:0 0 28px;padding:23px 25px 23px 27px;
+      border:1px solid #e2e2e2;border-left:4px solid #555555;border-radius:0 12px 12px 0;
+      background:linear-gradient(110deg,#f6f6f6 0%,#fcfcfc 78%);
+      color:#2a2a2a;font-size:15px;line-height:1.25;
+    }
+    main h1 {
+      position:relative;padding:0 0 13px;margin:38px 0 20px;
+      color:var(--ink-strong);font-size:23px;font-weight:740;line-height:1.25;
+      border-bottom:1px solid var(--line);letter-spacing:.01em;
+    }
+    main h1::after {
+      content:"";position:absolute;bottom:-1px;left:0;
+      width:48px;height:3px;border-radius:3px;background:linear-gradient(90deg,#2d2d2d,#999999);
+    }
+    main h1:first-of-type { margin-top:16px }
+    main h2 {
+      color:#161616;font-size:17px;font-weight:720;line-height:1.25;
+      margin:29px 0 12px;
+    }
+    main h3 { color:#303030;font-size:15px;font-weight:690;margin:25px 0 10px }
+    main p { margin:11px 0;line-height:1.25 }
+    main ol,main ul { margin:0;padding-left:25px }
+    main ol {
+      list-style:none;counter-reset:bracket-index;
+      padding-left:46px;line-height:1.25;
+    }
+    main ol>li {
+      counter-increment:bracket-index;position:relative;
+      margin:0;padding:7px 0;line-height:1.25;
+      border-bottom:1px solid #eeeeee;
+    }
+    main ol>li:last-child { border-bottom:0 }
+    main ol>li::before {
+      content:"[" counter(bracket-index) "]";
+      position:absolute;left:-46px;top:7px;width:36px;
+      text-align:right;color:#585858;font-weight:700;font-size:13px;
+    }
+    main ol>li>p,main ol>li>p:first-child { margin:0;line-height:1.25 }
+    main ul>li { margin:0;padding:5px 0;line-height:1.25 }
+    main li a { font-weight:600;text-decoration:underline;text-decoration-color:#a8a8a8;text-underline-offset:3px;overflow-wrap:anywhere }
+    main li a:hover { text-decoration:underline }
+    main strong { color:var(--ink-strong);font-weight:710 }
+    main ol>li sup { color:var(--accent-dark);font-size:.78em;font-weight:800;line-height:0;vertical-align:super }
+    main em { color:#333333 }
+    main code {
+      padding:2px 5px;border-radius:5px;
+      color:#303030;background:#f1f1f1;font:12px/1.25 Consolas,Monaco,monospace;
+    }
+    main small { color:#666666;font-size:12px;line-height:1.25 }
+    blockquote {
+      margin:18px 0;padding:13px 18px;
+      color:#454545;background:#f7f7f7;
+      border-left:3px solid #777777;border-radius:0 9px 9px 0;
+      font-size:13px;line-height:1.25;
+    }
+    hr { border:0;border-top:1px solid var(--line);margin:28px 0 }
+    footer {
+      padding:27px 20px 34px;text-align:center;
+      color:#6a6a6a;font-size:12px;line-height:1.25;
+      border-top:1px solid var(--line);
+    }
+    footer a { color:#404040 }
+    @media(max-width:1050px) {
+      .nav-inner { gap:14px;padding:0 24px }
+      .nav-links a { padding:11px 9px;font-size:12px }
+      .wrap { grid-template-columns:235px minmax(0,1fr);gap:22px;padding:32px 24px 65px }
+      aside { padding:26px 19px }
+      main { padding:32px 30px 45px }
+    }
+    @media(max-width:780px) {
+      .nav-inner { display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;min-height:0;padding:13px 19px 7px }
+      .language-switch { grid-column:2;grid-row:1;justify-self:end }
+      .language-switch button { padding:8px 9px }
+      .nav-links { grid-column:1/-1;grid-row:2 }
+      .brand { min-height:32px;font-size:16px;margin-bottom:4px }
+      .nav-links { gap:5px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none }
+      .nav-links::-webkit-scrollbar { display:none }
+      .nav-links a { flex:0 0 auto;min-height:38px;padding:9px 11px }
+      .wrap { display:block;padding:20px 16px 55px }
+      aside {
+        position:static;display:grid;grid-template-columns:88px minmax(0,1fr);
+        align-items:center;gap:7px 17px;margin-bottom:18px;padding:18px 20px;
+      }
+      .avatar { grid-row:1/4;width:84px;height:84px;margin:0;border-width:3px;font-size:31px }
+      aside h2 { grid-column:2;align-self:end;text-align:left;font-size:20px;margin:0 }
+      aside h2 small { display:inline;margin:0 0 0 6px;font-size:12px }
+      aside p { grid-column:2;text-align:left;margin:0;font-size:12px }
+      #profile-research-focus { margin:2px 0;padding:3px 9px }
+      aside .meta {
+        grid-column:1/-1;justify-content:flex-start;
+        margin-top:8px;padding-top:12px;
+      }
+      main { padding:26px 23px 35px;border-radius:13px }
+      main #about-me + p { padding:19px 17px;margin-bottom:23px;font-size:14px }
+      main h1 { font-size:21px }
+      main h2 { font-size:16px }
+    }
+    @media(max-width:440px) {
+      .wrap { padding:15px 10px 40px }
+      aside { padding:16px 15px;grid-template-columns:74px minmax(0,1fr);gap:6px 12px;border-radius:12px }
+      .avatar { width:72px;height:72px;font-size:27px }
+      aside h2 { font-size:19px }
+      aside h2 small { display:block;margin:3px 0 0 }
+      main { padding:22px 18px 30px }
+      main ol { padding-left:40px }
+      main ol>li::before { left:-40px;width:32px }
+      main h1 { font-size:20px }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto }
+      *,*::before,*::after { transition:none!important;animation:none!important }
+    }
+  
+  </style>
+</head>
+<body> 
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#about-me" id="site-title"></a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#about-me"></a><a href="#experience"></a><a href="#publications"></a>
+        <a href="#projects"></a><a href="#patents"></a><a href="#standards"></a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="语言切换">
+        <button type="button" data-language="zh" aria-pressed="true" lang="zh-CN">中文</button>
+        <button type="button" data-language="en" aria-pressed="false" lang="en">English</button>
+      </div>
+    </div>
+  </header>
+  <div class="wrap">
+    <aside aria-label="个人资料">
+      <div class="avatar" id="profile-avatar" role="img"></div>
+      <h2><span id="profile-name-cn"></span> <small id="profile-name-en"></small></h2>
+      <p id="profile-affiliation"></p>
+      <p id="profile-research-focus"></p>
+      <div class="meta">
+        <a id="profile-github" target="_blank" rel="noopener noreferrer"></a>
+        <a id="profile-scholar" target="_blank" rel="noopener noreferrer"></a>
+      </div>
+    </aside>
+    <main id="page-content"></main>
+  </div>
+  <footer id="site-footer"></footer>
+  <script type="module">
+    import { marked } from './assets/marked.esm.js';
+
+    const content = document.getElementById('page-content');
+    const source = new URL('./_pages/about.md', document.baseURI);
+    let lastMarkdown = null;
+    const urlLanguage = new URLSearchParams(location.search).get('lang');
+    let currentLanguage = urlLanguage === 'en' || urlLanguage === 'zh' ? urlLanguage : (() => {
+      try { return localStorage.getItem('resume-language') === 'en' ? 'en' : 'zh'; }
+      catch { return 'zh'; }
+    })();
+
+    // Header, sidebar, navigation, footer and main content all live in one Markdown file.
+    function parseSource(markdown) {
+      const match = markdown.match(/^\uFEFF?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+      if (!match) return { meta: {}, body: markdown };
+
+      const meta = {};
+      for (const line of match[1].split(/\r?\n/)) {
+        const field = line.match(/^([a-z_][a-z0-9_]*)\s*:\s*(.*)$/i);
+        if (!field) continue;
+        let value = field[2].trim();
+        if ((value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
+        meta[field[1]] = value;
+      }
+      return { meta, body: markdown.slice(match[0].length) };
+    }
+
+    function localizedBody(markdownBody, language) {
+      const zhMarker = '<!-- lang:zh -->';
+      const enMarker = '<!-- lang:en -->';
+      const zhStart = markdownBody.indexOf(zhMarker);
+      const enStart = markdownBody.indexOf(enMarker);
+      if (zhStart < 0 || enStart < zhStart) return language === 'zh' ? markdownBody : '';
+      return language === 'en'
+        ? markdownBody.slice(enStart + enMarker.length)
+        : markdownBody.slice(zhStart + zhMarker.length, enStart);
+    }
+
+    function applyMetadata(meta) {
+      const english = currentLanguage === 'en';
+      const localized = key => english ? (meta[key + '_en'] ?? '') : (meta[key] ?? '');
+      const textFields = {
+        'site-title': 'site_title',
+        'profile-affiliation': 'affiliation',
+        'profile-research-focus': 'research_focus'
+      };
+      for (const [elementId, metaKey] of Object.entries(textFields)) {
+        document.getElementById(elementId).textContent = localized(metaKey);
+      }
+      document.getElementById('profile-name-cn').textContent = english ? localized('name_primary') : (meta.name_cn || '');
+      document.getElementById('profile-name-en').textContent = english ? localized('name_secondary') : (meta.name_en || '');
+      document.documentElement.lang = english ? 'en' : 'zh-CN';
+      document.querySelector('.nav-links').setAttribute('aria-label', english ? 'Main navigation' : '主导航');
+      document.querySelector('.language-switch').setAttribute('aria-label', english ? 'Language' : '语言切换');
+      document.querySelector('aside').setAttribute('aria-label', english ? 'Profile' : '个人资料');
+      for (const button of document.querySelectorAll('.language-switch button')) {
+        button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage));
+      }
+      document.querySelector('.language-switch button[data-language="zh"]').textContent =
+        english ? 'Chinese' : '中文';
+      // Derive a readable monogram when avatar_text is not supplied in the Markdown.
+      const inferredInitials = (meta.name_en || '').trim().split(/\s+/).filter(Boolean)
+        .map(part => part.charAt(0)).join('').slice(0, 2).toUpperCase();
+      document.getElementById('profile-avatar').textContent =
+        meta.avatar_text || inferredInitials || (meta.name_cn || '').slice(0, 1);
+      document.title = [meta.name_en, localized('site_title')].filter(Boolean).join(' — ');
+      document.querySelector('meta[name="description"]').content = localized('site_description');
+      document.getElementById('profile-avatar').setAttribute('aria-label',
+        english ? 'Portrait of ' + (meta.name_en || 'Lu Zhang') : (meta.name_cn || '') + '头像');
+      for (const [elementId, textKey, urlKey] of [
+        ['profile-github', 'github_text', 'github_url'],
+        ['profile-scholar', 'scholar_text', 'scholar_url']
+      ]) {
+        const link = document.getElementById(elementId);
+        link.textContent = (english ? meta[textKey + '_en'] : meta[textKey]) || meta[textKey] || '';
+        link.href = meta[urlKey] || '#';
+        link.hidden = !meta[textKey] || !meta[urlKey];
+      }
+      for (const [id, key] of [
+        ['about-me', 'nav_intro'],
+        ['experience', 'nav_experience'],
+        ['publications', 'nav_publications'],
+        ['projects', 'nav_projects'],
+        ['patents', 'nav_patents'],
+        ['standards', 'nav_standards']
+      ]) {
+        document.querySelector('.nav-links a[href="#' + id + '"]').textContent = localized(key);
+      }
+      document.getElementById('site-footer').innerHTML =
+        marked.parseInline(localized('footer_markdown'));
+    }
+
+    // Literal * inside <sup> can be parsed as emphasis when several authors are starred.
+    // Encode it before Markdown parsing, including in future manual edits.
+    function protectAuthorSuperscripts(markdown) {
+      return markdown.replace(/<sup>\s*\*\s*<\/sup>/gi, '<sup>&#42;</sup>');
+    }
+
+    function renderPage(markdown) {
+      const { meta, body } = parseSource(markdown);
+      applyMetadata(meta);
+      const visibleBody = localizedBody(body, currentLanguage);
+      content.innerHTML = visibleBody
+        ? marked.parse(protectAuthorSuperscripts(visibleBody), { gfm: true })
+        : (currentLanguage === 'en' ? 'English content is not available yet.' : '中文内容暂不可用。');
+      updateActiveNavigation();
+    }
+
+    function setLanguage(language) {
+      if (language !== 'zh' && language !== 'en') return;
+      currentLanguage = language;
+      try { localStorage.setItem('resume-language', language); } catch { /* storage may be disabled */ }
+      const url = new URL(location.href);
+      if (language === 'en') url.searchParams.set('lang', 'en');
+      else url.searchParams.delete('lang');
+      history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+      if (lastMarkdown !== null) {
+        renderPage(lastMarkdown);
+        if (location.hash) requestAnimationFrame(() => scrollToSection(decodeURIComponent(location.hash.slice(1)), false));
+      }
+    }
+    document.querySelectorAll('.language-switch button').forEach(button => {
+      button.addEventListener('click', () => setLanguage(button.dataset.language));
+    });
+
+    async function refreshContent() {
+      if (document.visibilityState === 'hidden') return;
+      const requestUrl = new URL(source.href);
+      requestUrl.searchParams.set('refresh', String(Date.now()));
+      try {
+        const response = await fetch(requestUrl, { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const markdown = await response.text();
+        if (markdown === lastMarkdown) return;
+
+        lastMarkdown = markdown;
+        renderPage(markdown);
+      } catch (error) {
+        if (!lastMarkdown) content.textContent = currentLanguage === 'en'
+          ? 'Unable to load the homepage. Please refresh and try again.'
+          : '主页内容暂时无法加载，请刷新重试。';
+        console.warn('无法获取最新主页文本。', error);
+      }
+    }
+
+    // Mark the current section in the navigation; scrolling never changes sections on its own.
+    const sectionIds = ['about-me','experience','publications','projects','patents','standards'];
+    let scrollSpyPending = false;
+    function updateActiveNavigation() {
+      const navHeight = document.querySelector('.nav')?.getBoundingClientRect().height || 0;
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const anchor = document.getElementById(id);
+        if (anchor && anchor.getBoundingClientRect().top <= navHeight + 38) current = id;
+      }
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        if (link.getAttribute('href') === '#' + current) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+      scrollSpyPending = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scrollSpyPending) {
+        scrollSpyPending = true;
+        requestAnimationFrame(updateActiveNavigation);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', updateActiveNavigation);
+
+    function scrollToSection(id, smooth = true) {
+      const anchor = document.getElementById(id);
+      if (!anchor) return false;
+      const wrapper = anchor.closest('p') || anchor;
+      const target = wrapper.nextElementSibling || anchor;
+      const navHeight = document.querySelector('.nav')?.getBoundingClientRect().height || 0;
+      const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - navHeight - 12);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top, behavior: smooth && !reduceMotion ? 'smooth' : 'auto' });
+      return true;
+    }
+
+    document.querySelectorAll('.nav a[href^="#"]').forEach(link => {
+      link.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const id = decodeURIComponent(link.hash.slice(1));
+        if (!lastMarkdown) await refreshContent();
+        if (scrollToSection(id)) history.pushState(null, '', '#' + encodeURIComponent(id));
+      });
+    });
+
+    refreshContent().then(() => {
+      if (location.hash) scrollToSection(decodeURIComponent(location.hash.slice(1)), false);
+    });
+    window.setInterval(refreshContent, 60_000);
+    document.addEventListener('visibilitychange', refreshContent);
+  </script>
+</body>
+</html>
