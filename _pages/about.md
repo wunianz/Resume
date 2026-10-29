@@ -1,7 +1,6 @@
 ---
 # 以下信息用于顶部导航、左侧个人资料和页脚；直接修改冒号右侧的文字即可
-site_title: 学术主页
-site_description: 智能感知
+site_title: 主页
 name_cn: 张露
 name_en: Lu Zhang
 name_secondary: 副研究员
@@ -18,10 +17,9 @@ nav_projects: 科研项目
 nav_patents: 发明专利
 nav_standards: 标准制定
 # English-language metadata (edit here)
-site_title_en: Academic Homepage
-site_description_en: Intelligent Perception | Research and Publications
+site_title_en: Homepage
 name_primary_en: Lu Zhang
-name_secondary_en: Associate Researcher
+name_secondary_en: Associate Professor
 affiliation_en: Institute of Artificial Intelligence, Hefei Comprehensive National Science Center
 research_focus_en: Intelligent Perception
 github_text_en: GitHub
