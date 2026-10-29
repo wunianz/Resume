@@ -344,7 +344,7 @@
         document.getElementById(elementId).textContent = localized(metaKey);
       }
       document.getElementById('profile-name-cn').textContent = english ? localized('name_primary') : (meta.name_cn || '');
-      document.getElementById('profile-name-en').textContent = english ? localized('name_secondary') : (meta.name_en || '');
+      document.getElementById('profile-name-en').textContent = english ? localized('name_secondary') : (meta.name_secondary || '');
       document.documentElement.lang = english ? 'en' : 'zh-CN';
       document.querySelector('.nav-links').setAttribute('aria-label', english ? 'Main navigation' : '主导航');
       document.querySelector('.language-switch').setAttribute('aria-label', english ? 'Language' : '语言切换');
